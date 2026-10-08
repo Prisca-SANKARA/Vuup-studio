@@ -35,7 +35,7 @@ PAGES = {
     },
     "en.html": {
         "lang": "en",
-        "path": "/en.html",
+        "path": "/en",
         "title": "Vuup · Professional websites from 1,500 MAD",
         "description": "Professional websites for shops, freelancers and small businesses, in Morocco and worldwide. "
                        "Hosting, domain, maintenance and Google SEO included. Free quote on WhatsApp.",
@@ -101,12 +101,19 @@ def head(meta):
 """
 
 
+def clean_links(html):
+    """En ligne, Cloudflare sert les pages sans « .html » (/en, /legal) : on écrit directement ces adresses."""
+    return (html.replace('href="index.html"', 'href="/"')
+                .replace('href="en.html"', 'href="/en"')
+                .replace('href="legal.html', 'href="/legal'))
+
+
 def wrap(name, meta):
     src = (ROOT / name).read_text(encoding="utf-8")
     # le fichier source commence par son propre <title> : on le retire, le <head> en fournit un
     if src.startswith("<title>"):
         src = src[src.index("</title>") + len("</title>"):].lstrip("\n")
-    (DIST / name).write_text(head(meta) + src + "\n</body>\n</html>\n", encoding="utf-8")
+    (DIST / name).write_text(clean_links(head(meta) + src + "\n</body>\n</html>\n"), encoding="utf-8")
 
 
 def main():
@@ -114,7 +121,9 @@ def main():
     DIST.mkdir(exist_ok=True)
     for name, meta in PAGES.items():
         wrap(name, meta)
-    for f in ("legal.html", "favicon.svg", "icon-512.png", "og-image.png"):
+    for page in ("legal.html", "404.html"):  # 404.html : servie par Cloudflare Pages pour toute adresse inconnue
+        (DIST / page).write_text(clean_links((ROOT / page).read_text(encoding="utf-8")), encoding="utf-8")
+    for f in ("favicon.svg", "icon-512.png", "og-image.png"):
         shutil.copy2(ROOT / f, DIST / f)
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
     urls = "".join(

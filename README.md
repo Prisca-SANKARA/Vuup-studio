@@ -25,6 +25,7 @@ Site vitrine de **Vuup**, studio de création de sites web basé à Casablanca, 
 | `build-en.py` | Génère `en.html` à partir d'une table de traduction FR → EN. S'arrête si un texte français a changé sans traduction. |
 | `build-site.py` | Construit `dist/` : ajoute le `<head>` complet (SEO, Open Graph, favicon), copie les fichiers, écrit `robots.txt` et `sitemap.xml` |
 | `legal.html` | Mentions légales, politique de confidentialité, conditions de vente |
+| `404.html` | Page « introuvable » : les yeux du logo cherchent la page perdue |
 | `assets-src/` | Sources HTML de l'image de partage et de l'icône (rendues en PNG avec Edge en mode headless) |
 
 ## Construire en local

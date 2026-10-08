@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page introuvable · Vuup</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap">
+<style>
+  /* Page 404 : une seule colonne centrée, les yeux du logo « cherchent » la page perdue. */
+  :root{
+    --bg:#f6f5f2;--surface:#ffffff;--fg:#1a1614;--muted:#6b635c;--line:#e6e1da;--accent:#ff5a36;--accent-2:#ffa23a;--accent-3:#ff3d7f;--wa:#25d366;
+    --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+    --body:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131110;--surface:#1d1a17;--fg:#f4f0ea;--muted:#a89f95;--line:#2f2a25;--accent:#ff6a44;--accent-2:#ffb457;--accent-3:#ff5a90;color-scheme:dark}}
+  :root[data-theme="dark"]{--bg:#131110;--surface:#1d1a17;--fg:#f4f0ea;--muted:#a89f95;--line:#2f2a25;--accent:#ff6a44;--accent-2:#ffb457;--accent-3:#ff5a90;color-scheme:dark}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);-webkit-font-smoothing:antialiased;display:flex;align-items:center;justify-content:center;padding:32px 20px;padding-top:max(32px,env(safe-area-inset-top));padding-bottom:max(32px,env(safe-area-inset-bottom));text-align:center}
+  main{display:flex;flex-direction:column;align-items:center;gap:22px;max-width:520px}
+  .eyes{width:min(260px,62vw);height:auto;overflow:visible}
+  .lt{fill:none;stroke-width:18;stroke-linecap:round;stroke-linejoin:round}
+  .pupil{fill:var(--fg);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+  .code{font-family:var(--display);font-weight:800;font-size:clamp(4.5rem,18vw,7rem);line-height:.9;letter-spacing:-.05em;margin:0;background:linear-gradient(110deg,var(--accent),var(--accent-2) 50%,var(--accent-3));-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1{font-family:var(--display);font-size:clamp(1.5rem,5vw,2rem);letter-spacing:-.02em;line-height:1.1;margin:0;text-wrap:balance}
+  p{margin:0;color:var(--muted);line-height:1.6}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+  .btn{display:inline-flex;align-items:center;gap:.5em;font:700 .97rem var(--body);padding:.85em 1.35em;border-radius:999px;text-decoration:none;transition:transform .25s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(255,90,54,.35)}
+  .primary{color:#fff;background:linear-gradient(110deg,var(--accent),var(--accent-2))}
+  .ghost{color:var(--fg);background:var(--surface);border:1px solid var(--line)}
+  .en{font-size:.85rem}
+  .en a{color:var(--accent)}
+  @media (prefers-reduced-motion:reduce){.pupil{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <svg class="eyes" viewBox="71 14 128 84" role="img" aria-label="Les yeux de Vuup cherchent la page">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--accent-2)"/></linearGradient></defs>
+    <path class="lt" stroke="url(#g)" d="M80 32 V58 A22 22 0 0 0 124 58 V32"/>
+    <path class="lt" stroke="url(#g)" d="M146 32 V58 A22 22 0 0 0 190 58 V32"/>
+    <circle class="pupil" cx="102" cy="54" r="9"/>
+    <circle class="pupil" cx="168" cy="54" r="9"/>
+  </svg>
+  <p class="code">404</p>
+  <h1>On a beau chercher, cette page est introuvable.</h1>
+  <p>Le lien est peut-être ancien ou mal recopié. Pas de panique : tout le reste est bien là.</p>
+  <div class="actions">
+    <a class="btn primary" href="/">Retour à l'accueil</a>
+    <a class="btn ghost" href="https://wa.me/212775767001" target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+  </div>
+  <p class="en">Page not found. <a href="/en" lang="en">Go to the English homepage</a>.</p>
+</main>
+<script>
+  try{ var t = localStorage.getItem('vuup-theme'); if(t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); }catch(e){}
+  (function(){
+    // Les pupilles regardent à gauche, à droite, en haut… comme si elles cherchaient la page.
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var pupils = document.querySelectorAll('.pupil');
+    var looks = [[-5,0],[5,0],[-5,-6],[5,-6],[0,-8],[0,3],[-5,2],[5,2]], i = 0;
+    function look(){
+      var p = looks[i++ % looks.length];
+      pupils.forEach(function(el){ el.style.transform = 'translate(' + p[0] + 'px,' + p[1] + 'px)'; });
+    }
+    look();
+    setInterval(look, 900);
+  })();
+</script>
+</body>
+</html>
