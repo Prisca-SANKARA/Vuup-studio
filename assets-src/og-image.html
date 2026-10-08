@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Image de partage Vuup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@500;700&display=swap">
+<style>
+  /* Image Open Graph 1200 x 630 : texte à gauche, icône aux yeux à droite. Le contenu clé reste au centre pour les recadrages carrés. */
+  html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+  body{position:relative;background:#120e0c;color:#f7f2ec;font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+    background-image:radial-gradient(520px 420px at 8% 0%,rgba(255,90,54,.55),transparent 70%),radial-gradient(520px 420px at 100% 20%,rgba(255,162,58,.45),transparent 70%),radial-gradient(560px 400px at 60% 120%,rgba(255,61,127,.4),transparent 70%)}
+  .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:60px 60px;-webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 40%,#000 20%,transparent 80%)}
+  .in{position:relative;height:100%;box-sizing:border-box;padding:70px 80px;display:grid;grid-template-columns:1fr 330px;gap:40px;align-items:center}
+  .copy{display:flex;flex-direction:column;gap:26px}
+  .logo{height:96px;width:263px;align-self:flex-start;margin-left:-4px;overflow:visible}
+  .lt{fill:none;stroke-width:18;stroke-linecap:round;stroke-linejoin:round}
+  h1{margin:0;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:66px;line-height:1;letter-spacing:-.04em}
+  h1 span{background:linear-gradient(110deg,#ff5a36,#ffa23a 50%,#ff3d7f);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .meta{display:flex;gap:14px;flex-wrap:wrap}
+  .meta span{font-weight:700;font-size:22px;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+  .icon{width:330px;height:330px;filter:drop-shadow(0 40px 60px rgba(0,0,0,.55))}
+</style>
+</head>
+<body>
+<div class="grid"></div>
+<div class="in">
+  <div class="copy">
+    <svg class="logo" viewBox="-12 14 296 108"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a36"/><stop offset=".55" stop-color="#ffa23a"/><stop offset="1" stop-color="#ff3d7f"/></linearGradient></defs><path class="lt" stroke="#f7f2ec" d="M8 32 L33 80 L58 32"/><path class="lt" stroke="#f7f2ec" d="M80 32 V58 A22 22 0 0 0 124 58 V32"/><path class="lt" stroke="url(#g)" d="M146 32 V58 A22 22 0 0 0 190 58 V32"/><path class="lt" stroke="url(#g)" d="M212 108 V32 M212 56 a24 24 0 1 0 48 0 a24 24 0 1 0 -48 0"/><circle cx="104" cy="48" r="8.5" fill="#ff6a44"/><circle cx="170" cy="48" r="8.5" fill="#ff6a44"/></svg>
+    <h1>Soyez vu,<br><span>passez devant.</span></h1>
+    <div class="meta"><span>Sites web pro dès 1 500 DH</span><span>Casablanca · partout</span></div>
+  </div>
+  <svg class="icon" viewBox="0 0 100 100"><defs><linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a36"/><stop offset="1" stop-color="#ffa23a"/></linearGradient></defs><rect width="100" height="100" rx="26" fill="url(#gb)"/><g transform="translate(-24.3,19.5) scale(.55)" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round"><path d="M80 32 V58 A22 22 0 0 0 124 58 V32"/><path d="M146 32 V58 A22 22 0 0 0 190 58 V32"/></g><circle cx="33" cy="46" r="5" fill="#1a1614"/><circle cx="69.3" cy="46" r="5" fill="#1a1614"/></svg>
+</div>
+</body>
+</html>

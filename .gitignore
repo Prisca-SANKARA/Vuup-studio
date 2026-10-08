@@ -1,0 +1,16 @@
+# Générés par build-site.py (Cloudflare les reconstruit à chaque déploiement)
+dist/
+en.html
+
+# Documents internes, non publiés
+vuup-identite.html
+
+# Python
+__pycache__/
+*.pyc
+
+# Système / éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
