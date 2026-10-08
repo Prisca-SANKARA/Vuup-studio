@@ -19,6 +19,10 @@ from pathlib import Path
 SITE_URL = "https://vuupstudio.com"  # domaine acheté le 2026-10-08 chez Cloudflare
 PHONE = "+212775767001"
 
+# Mesure d'audience : laisser vide pour désactiver. Ces identifiants sont publics (visibles dans le code des pages).
+GA4_ID = "G-76N589CXJ0"       # Google Analytics 4, ex. "G-ABC123XYZ"
+CLARITY_ID = "yunskkfrkh"   # Microsoft Clarity, ex. "abcd1234ef"
+
 ROOT = Path(__file__).resolve().parent
 DIST = ROOT / "dist"
 
@@ -125,6 +129,14 @@ def main():
         (DIST / page).write_text(clean_links((ROOT / page).read_text(encoding="utf-8")), encoding="utf-8")
     for f in ("favicon.svg", "icon-512.png", "og-image.png"):
         shutil.copy2(ROOT / f, DIST / f)
+    if GA4_ID or CLARITY_ID:
+        # bandeau cookies : les outils de mesure ne se chargent qu'après l'accord du visiteur
+        consent = ((ROOT / "assets-src" / "consent.html").read_text(encoding="utf-8")
+                   .replace("{{GA4_ID}}", GA4_ID).replace("{{CLARITY_ID}}", CLARITY_ID))
+        for page in ("index.html", "en.html", "legal.html", "404.html"):
+            html = (DIST / page).read_text(encoding="utf-8")
+            cut = html.rindex("</body>")
+            (DIST / page).write_text(html[:cut] + consent + "\n" + html[cut:], encoding="utf-8")
     (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
     urls = "".join(
         f"  <url><loc>{SITE_URL}{p['path']}</loc>"

@@ -1,0 +1,86 @@
+<!-- Bandeau cookies + mesure d'audience (injecté par build-site.py dans les pages en ligne) -->
+<style>
+  .cc{position:fixed;z-index:200;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:560px;margin-inline:auto;background:#1a1614;color:#f7f2ec;border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:18px 20px;box-shadow:0 24px 60px -20px rgba(0,0,0,.6);font:500 .92rem/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;gap:14px}
+  .cc[hidden]{display:none}
+  .cc p{margin:0}
+  .cc a{color:#ffb457}
+  .cc-btns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+  .cc button{font:700 .9rem "Plus Jakarta Sans",system-ui,sans-serif;padding:.7em 1.3em;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.35);background:transparent;color:#f7f2ec}
+  .cc button.cc-yes{border-color:transparent;color:#fff;background:linear-gradient(110deg,#ff5a36,#ffa23a)}
+  .cc button:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(255,162,58,.55)}
+</style>
+<div class="cc" id="cc" role="dialog" aria-live="polite" aria-labelledby="cc-text" hidden>
+  <p id="cc-text"></p>
+  <div class="cc-btns"><button type="button" id="cc-no"></button><button type="button" class="cc-yes" id="cc-yes"></button></div>
+</div>
+<script>
+(function(){
+  var GA = '{{GA4_ID}}', CL = '{{CLARITY_ID}}';
+  var en = document.documentElement.lang === 'en';
+  var T = en ? {
+    text: 'We use cookies to measure visits and improve the site (Google Analytics, Microsoft Clarity). No advertising. <a href="/legal#confidentialite">Learn more</a>',
+    no: 'Decline', yes: 'Accept', manage: 'Cookies'
+  } : {
+    text: 'Nous utilisons des cookies pour mesurer les visites et améliorer le site (Google Analytics, Microsoft Clarity). Aucune publicité. <a href="/legal#confidentialite">En savoir plus</a>',
+    no: 'Refuser', yes: 'Accepter', manage: 'Gérer les cookies'
+  };
+  var KEY = 'vuup-consent', MAX_AGE = 182 * 864e5;   // on redemande au bout de 6 mois
+  var box = document.getElementById('cc');
+  document.getElementById('cc-text').innerHTML = T.text;
+  document.getElementById('cc-no').textContent = T.no;
+  document.getElementById('cc-yes').textContent = T.yes;
+
+  function read(){ try{ var v = JSON.parse(localStorage.getItem(KEY)); if(v && Date.now() - v.t < MAX_AGE) return v.c; }catch(e){} return null; }
+  function save(c){ try{ localStorage.setItem(KEY, JSON.stringify({ c:c, t:Date.now() })); }catch(e){} }
+
+  var loaded = false;
+  function load(){
+    if(loaded) return; loaded = true;
+    if(GA){
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', GA, { cookie_expires: 33696000 });   // 13 mois maximum
+      var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
+      document.head.appendChild(s);
+    }
+    if(CL){
+      (function(c,l,a,r,i,t,y){ c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; t=l.createElement(r); t.async=1; t.src='https://www.clarity.ms/tag/'+i; y=l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t,y); })(window, document, 'clarity', 'script', CL);
+      window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'granted' });
+    }
+  }
+  function choose(c){
+    save(c); box.hidden = true;
+    if(c === 'granted') load();
+    else if(loaded && window.clarity) window.clarity('consentv2', { ad_Storage: 'denied', analytics_Storage: 'denied' });
+  }
+  document.getElementById('cc-yes').addEventListener('click', function(){ choose('granted'); });
+  document.getElementById('cc-no').addEventListener('click', function(){ choose('denied'); });
+
+  var c = read();
+  if(c === 'granted') load(); else if(c === null) box.hidden = false;
+
+  // Lien « Gérer les cookies » dans le pied de page
+  var links = document.querySelector('.foot-links') || document.querySelector('footer');
+  if(links){
+    var a = document.createElement('a'); a.href = '#'; a.textContent = T.manage;
+    a.addEventListener('click', function(e){ e.preventDefault(); box.hidden = false; document.getElementById('cc-yes').focus(); });
+    if(links.tagName === 'FOOTER') links.appendChild(document.createTextNode(' · '));
+    links.appendChild(a);
+  }
+
+  // Ce qui compte pour une activité : les demandes de contact
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a');
+    if(!a || e.defaultPrevented || !window.gtag) return;
+    var href = a.getAttribute('href') || '';
+    var place = a.id || (a.closest('section[id], header, footer') || {}).id || (a.closest('header') ? 'menu' : a.classList.contains('wa-float') ? 'bouton-flottant' : 'autre');
+    if(href.indexOf('wa.me') > -1){
+      var name = a.id === 'simSend' ? 'devis_simulateur' : a.id === 'aSend' ? 'demande_audit' : a.id === 'waSend' ? 'demande_devis' : 'clic_whatsapp';
+      gtag('event', name, { emplacement: place });
+    } else if(href.indexOf('mailto:') === 0){
+      gtag('event', 'clic_email', { emplacement: place });
+    }
+  });
+})();
+</script>
