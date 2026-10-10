@@ -23,6 +23,13 @@ PHONE = "+212775767001"
 GA4_ID = "G-76N589CXJ0"       # Google Analytics 4, ex. "G-ABC123XYZ"
 CLARITY_ID = "yunskkfrkh"   # Microsoft Clarity, ex. "abcd1234ef"
 
+# Profils officiels (Instagram, TikTok…) : Google les relie au site. À remplir quand les comptes existent.
+SOCIAL_PROFILES = [
+    "https://www.instagram.com/vuupstudio",
+    "https://www.tiktok.com/@vuupstudio",
+    "https://www.youtube.com/@VuupStudio",
+]
+
 ROOT = Path(__file__).resolve().parent
 DIST = ROOT / "dist"
 
@@ -30,21 +37,21 @@ PAGES = {
     "index.html": {
         "lang": "fr",
         "path": "/",
-        "title": "Vuup · Création de sites web professionnels dès 1 500 DH",
+        "title": "Vuup Studio · Création de sites web sur mesure, maquette offerte",
         "description": "Sites web professionnels pour commerçants, indépendants et PME, au Maroc et partout ailleurs. "
                        "Hébergement, domaine, maintenance et référencement Google inclus. Devis gratuit sur WhatsApp.",
-        "og_title": "Vuup · Soyez vu, passez devant.",
-        "og_description": "Sites web professionnels dès 1 500 DH. Hébergement, domaine et maintenance inclus.",
+        "og_title": "Vuup Studio · Soyez vu, passez devant.",
+        "og_description": "Sites web sur mesure, maquette offerte en 48h. Hébergement, domaine et maintenance inclus.",
         "locale": "fr_FR",
     },
     "en.html": {
         "lang": "en",
         "path": "/en",
-        "title": "Vuup · Professional websites from 1,500 MAD",
+        "title": "Vuup Studio · Custom websites, free mockup in 48h",
         "description": "Professional websites for shops, freelancers and small businesses, in Morocco and worldwide. "
                        "Hosting, domain, maintenance and Google SEO included. Free quote on WhatsApp.",
-        "og_title": "Vuup · Get seen, get ahead.",
-        "og_description": "Professional websites from 1,500 MAD. Hosting, domain and maintenance included.",
+        "og_title": "Vuup Studio · Get seen, get ahead.",
+        "og_description": "Custom websites, free mockup in 48h. Hosting, domain and maintenance included.",
         "locale": "en_US",
     },
 }
@@ -63,7 +70,8 @@ def head(meta):
     ld = {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
-        "name": "Vuup",
+        "name": "Vuup Studio",
+        "alternateName": "Vuup",
         "url": SITE_URL + "/",
         "image": SITE_URL + "/og-image.png",
         "logo": SITE_URL + "/icon-512.png",
@@ -73,6 +81,11 @@ def head(meta):
         "address": {"@type": "PostalAddress", "addressLocality": "Casablanca", "addressCountry": "MA"},
         "description": meta["description"],
     }
+    if SOCIAL_PROFILES:
+        ld["sameAs"] = SOCIAL_PROFILES
+    # Indique à Google le nom à afficher pour le site dans les résultats
+    site_ld = {"@context": "https://schema.org", "@type": "WebSite", "name": "Vuup Studio",
+               "alternateName": ["Vuup", "vuupstudio.com"], "url": SITE_URL + "/"}
     alt = "".join(
         f'<link rel="alternate" hreflang="{p["lang"]}" href="{SITE_URL}{p["path"]}">\n' for p in PAGES.values()
     )
@@ -89,7 +102,7 @@ def head(meta):
 <link rel="apple-touch-icon" href="icon-512.png">
 <meta name="theme-color" content="#ff5a36">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Vuup">
+<meta property="og:site_name" content="Vuup Studio">
 <meta property="og:title" content="{meta['og_title']}">
 <meta property="og:description" content="{meta['og_description']}">
 <meta property="og:url" content="{url}">
@@ -99,6 +112,7 @@ def head(meta):
 <meta property="og:locale" content="{meta['locale']}">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
+<script type="application/ld+json">{json.dumps(site_ld, ensure_ascii=False)}</script>
 {BASE_STYLE}
 </head>
 <body>

@@ -17,3 +17,6 @@ Thumbs.db
 
 # Kit de marque (logos, bannières, animation) : usage personnel, non publié
 brand/
+
+# Fichiers de prospection (données de contact) : jamais sur GitHub
+prospection/
